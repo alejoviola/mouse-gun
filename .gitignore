@@ -1,0 +1,8 @@
+# Claude Code configs (kept local, never committed)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
+
+# macOS
+.DS_Store
