@@ -19,9 +19,6 @@ export class Gun {
     this.#ctx = props.ctx;
     this.#width = props.width;
     this.#height = props.height;
-    
-  this.enemies = [];
-    
 
     //Positions
     this.mouse = {
@@ -323,36 +320,6 @@ export class Gun {
     );
     this.#ctx.restore();
   }
-  
-  #updateEnemies() {
-  // Spawnea enemigos aleatoriamente
-  if (Math.random() < 0.02) {
-    const x = Math.random() * this.#width;
-this.enemies.push(new Enemy(x, -50));
-  }
-
-  // Actualiza y dibuja enemigos
-  this.enemies.forEach((enemy, index) => {
-    enemy.update();
-    enemy.draw(this.#ctx);
-
-    // Check bullet collision
-    this.bullets.forEach((bullet) => {
-      const bulletX = this.gunPos.x + this.barrelCoordenate.x + bullet.x;
-      const bulletY = this.gunPos.y + this.barrelCoordenate.y + bullet.y;
-
-      if (enemy.isHit({ x: bulletX, y: bulletY })) {
-        enemy.isAlive = false;
-      }
-    });
-  });
-
-  // Elimina enemigos muertos o fuera de pantalla
-  this.enemies = this.enemies.filter(
-    (enemy) => enemy.isAlive && enemy.y < this.#height
-  );
-}
-
 
   /////////////
   //   Run   //
@@ -369,40 +336,8 @@ this.enemies.push(new Enemy(x, -50));
       this.#createGun();
       this.#createCircle();
       this.#renderBullets();
-      this.#updateEnemies();
       this.#frame += 1;
     }
-  }
-}
-
-class Enemy {
-  constructor(x, y, speed = 2) {
-    this.x = x;
-    this.y = y;
-    this.width = 40;
-    this.height = 40;
-    this.speed = speed;
-    this.isAlive = true;
-    this.image = new Image();
-    this.image.src = "https://i.ibb.co/7yH9Zz1/enemy.png"; // puedes cambiarlo
-  }
-
-  update() {
-    this.y += this.speed;
-  }
-
-  draw(ctx) {
-    if (!this.isAlive) return;
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-  }
-
-  isHit(bullet) {
-    return (
-      bullet.x + 10 > this.x &&
-      bullet.x < this.x + this.width &&
-      bullet.y + 10 > this.y &&
-      bullet.y < this.y + this.height
-    );
   }
 }
 
